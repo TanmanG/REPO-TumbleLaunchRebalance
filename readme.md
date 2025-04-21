@@ -10,10 +10,7 @@ This mod aims to fix that through two changes: contact damage from hitting an en
 
 The damage received while tumbling is as follows:
 
-$$
-\text{Effective Damage} = \text{damage} \times \max\!\Biggl\{ 1 - \text{max\_damage\_reduction},\;\; 1 + \frac{\text{tumble\_upgrades\_owned} \cdot \text{max\_damage\_reduction}}{\text{upgrades\_for\_max\_reduction}} \Biggr\}
-$$
-
+$$\text{damage} \times \max(1 - \text{max\\_damage\\_reduction}, 1 + \frac{\text{tumble\\_upgrades\\_owned } \times \text{ max\\_damage\\_reduction}}{\text{upgrades\\_for\\_max\\_reduction}})$$
 
 ## **Encounter an issue?**
 
