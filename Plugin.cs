@@ -15,7 +15,7 @@ public class Plugin : BaseUnityPlugin
     private static bool _patchFailed;
     private static ConfigEntry<int> _configTumbleDamageOnHitEnemy;
     private static ConfigEntry<int> _configTumbleUpgradesNeededForMaxReduction;
-    private static ConfigEntry<float> _configTumbleDamageMaxDamageReduction;
+    private static ConfigEntry<float> _configTumbleUpgradeMaxDamageReduction;
     
     internal static new ManualLogSource Logger;
 
@@ -32,10 +32,10 @@ public class Plugin : BaseUnityPlugin
                                                                8,
                                                                "The number of Tumble Launch upgrades the player needs to reach the max damage reduction. E.g. 5 means the player will reach maximum tumble damage reduction on their 5th upgrade.");
         
-        _configTumbleDamageMaxDamageReduction = Config.Bind("Balance",
-                                                            "TumbleDamageMaxDamageReduction",
-                                                            1.0f,
-                                                            "The maximum tumble damage reduction the player can have. E.g. 0.5 means the player can have at most 50% tumble damage reduction.");
+        _configTumbleUpgradeMaxDamageReduction = Config.Bind("Balance",
+                                                             "MaxDamageReduction",
+                                                             1.0f,
+                                                             "The maximum reduction to damage (while tumbling) that can be attained. E.g. 0.75 means the player can reach 75% reduction in damage, in which 100 damage would become -> 25.");
     }
         
     private void Awake()
@@ -185,21 +185,21 @@ public class Plugin : BaseUnityPlugin
             // Check if the number of upgrades needed are zero or less, which means we're automatically at max damage reduction.
             if (_configTumbleUpgradesNeededForMaxReduction.Value == 0)
             {
-                return (int) _configTumbleDamageMaxDamageReduction.Value * damage;
+                return (int) (1 - _configTumbleUpgradeMaxDamageReduction.Value) * damage;
             }
 
             // Get the number of tumble upgrades owned by the player.
             int tumbleUpgradesOwned =
                 StatsManager.instance.playerUpgradeLaunch[SemiFunc.PlayerGetSteamID(tumble.playerAvatar)];
 
-            // Calculate and return the damage reduction based on the number of upgrades owned.
+            // Calculate and return the damage reduction.
             float damageReduction = tumbleUpgradesOwned
-                                    * (_configTumbleDamageMaxDamageReduction.Value - 1)
+                                    * -_configTumbleUpgradeMaxDamageReduction.Value
                                     / _configTumbleUpgradesNeededForMaxReduction.Value
                                     + 1;
 
             // Clamp the damage reduction to be between 0 and the max damage reduction.
-            return (int) Math.Max(damageReduction, _configTumbleDamageMaxDamageReduction.Value) * damage;
+            return (int) Math.Max(damageReduction, 1 - _configTumbleUpgradeMaxDamageReduction.Value) * damage;
         }
         catch (Exception ex)
         {
