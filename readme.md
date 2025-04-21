@@ -8,6 +8,12 @@ Ever spend a significant amount of your hard earned money on more than few tumbl
 
 This mod aims to fix that through two changes: contact damage from hitting an enemy while tumbling no longer deals a flat 5 damage, and scaling damage reduction from each Tumble Launch owned.
 
+The damage received while tumbling is as follows:
+
+$$
+\text{Effective Damage} = \text{damage} \times \max\!\Biggl\{ 1 - \text{max\_damage\_reduction},\;\; 1 + \frac{\text{tumble\_upgrades\_owned} \cdot \text{max\_damage\_reduction}}{\text{upgrades\_for\_max\_reduction}} \Biggr\}
+$$
+
 
 ## **Encounter an issue?**
 
