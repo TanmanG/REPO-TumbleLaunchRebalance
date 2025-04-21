@@ -193,12 +193,12 @@ public class Plugin : BaseUnityPlugin
                 StatsManager.instance.playerUpgradeLaunch[SemiFunc.PlayerGetSteamID(tumble.playerAvatar)];
 
             // Calculate and return the damage reduction.
-            float damageReduction = 1 - _configTumbleUpgradeMaxDamageReduction.Value
+            float damageRatio = 1 - _configTumbleUpgradeMaxDamageReduction.Value
                                         * Math.Min(tumbleUpgradesOwned / _configTumbleUpgradesNeededForMaxReduction.Value,
                                                    1);
 
             // Clamp the damage reduction to be between 0 and the max damage reduction.
-            return (int) damageReduction * damage;
+            return (int) damageRatio * damage;
         }
         catch (Exception ex)
         {
